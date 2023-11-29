@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>License Generator</title>
+</head>
+<body>
+
+<h1>License Generator</h1>
+
+<form id="licenseForm">
+    <label for="duration">Select License Duration:</label>
+    <select id="duration" name="duration">
+        <option value="1">1 Hour</option>
+        <option value="7">1 Week</option>
+        <option value="15">15 Days</option>
+        <option value="30">30 Days</option>
+        <option value="60">60 Days</option>
+        <option value="90">90 Days</option>
+    </select>
+
+    <br>
+
+    <label for="activationCode">Activation Code:</label>
+    <input type="text" id="activationCode" name="activationCode" readonly>
+
+    <br>
+
+    <button type="button" onclick="generateLicense()">Generate License</button>
+</form>
+
+<script>
+    async function generateLicense() {
+        const duration = document.getElementById('duration').value;
+
+        try {
+            const response = await fetch('YOUR_API_ENDPOINT', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ duration }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            document.getElementById('activationCode').value = data.activationCode;
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error generating license. Please try again.');
+        }
+    }
+</script>
+
+</body>
+</html>
